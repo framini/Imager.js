@@ -282,7 +282,7 @@
             return;
         }
 
-        src = this.changeImageSrcToUseNewImageDimensions(image.getAttribute('data-src'), computedWidth);
+        src = this.changeImageSrcToUseNewImageDimensions(this.buildUrlStructure(image.getAttribute('data-src')), computedWidth);
 
         image.src = src;
     };
@@ -309,6 +309,11 @@
             .replace(/{width}/g, Imager.transforms.width(selectedWidth, this.widthsMap))
             .replace(/{pixel_ratio}/g, Imager.transforms.pixelRatio(this.devicePixelRatio));
     };
+
+    Imager.prototype.buildUrlStructure = function(src) {
+        return src
+            .replace(/\.(jpg|gif|bmp|png)[^s]?({width})?[^s]({pixel_ratio})?/g, ".adapt.$2.$3.$1")
+    }
 
     Imager.getPixelRatio = function getPixelRatio(context) {
         return (context || window)['devicePixelRatio'] || 1;
