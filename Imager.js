@@ -134,6 +134,9 @@
         this.widthsMap = {};
         this.refreshPixelRatio();
         this.widthInterpolator = opts.widthInterpolator || returnDirectValue;
+        this.deltaSquare = opts.deltaSquare || 1.5;
+        this.squareSelector = opts.squareSelector || 'sqrcrop';
+        this.adaptSelector = this.adaptSelector || 'adapt';
 
         // Needed as IE8 adds a default `width`/`height` attribute…
         this.gif.removeAttribute('height');
@@ -282,7 +285,7 @@
             return;
         }
 
-        src = this.changeImageSrcToUseNewImageDimensions(this.buildUrlStructure(image.getAttribute('data-src')), computedWidth);
+        src = this.changeImageSrcToUseNewImageDimensions(this.buildUrlStructure(image.getAttribute('data-src'), image), computedWidth);
 
         image.src = src;
 
@@ -314,10 +317,17 @@
             .replace(/{pixel_ratio}/g, Imager.transforms.pixelRatio(this.devicePixelRatio));
     };
 
-    Imager.prototype.buildUrlStructure = function(src) {
+    Imager.prototype.buildUrlStructure = function(src, image) {
+        console.log(this.isImageContainerSquare(image));
+        var squareSelector = this.isImageContainerSquare(image) ? '.' + this.squareSelector : '';
+
         return src
-            .replace(/\.(jpg|gif|bmp|png)[^s]?({width})?[^s]({pixel_ratio})?/g, ".adapt.$2.$3.$1")
-    }
+            .replace(/\.(jpg|gif|bmp|png)[^s]?({width})?[^s]({pixel_ratio})?/g, '.' + this.adaptSelector + '.$2.$3' + squareSelector + '.$1');
+    };
+
+    Imager.prototype.isImageContainerSquare = function(image) {
+        return (image.parentNode.clientWidth / image.parentNode.clientHeight) <= this.deltaSquare
+    };
 
     Imager.getPixelRatio = function getPixelRatio(context) {
         return (context || window)['devicePixelRatio'] || 1;
