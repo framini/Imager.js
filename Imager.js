@@ -318,7 +318,6 @@
     };
 
     Imager.prototype.buildUrlStructure = function(src, image) {
-        console.log(this.isImageContainerSquare(image));
         var squareSelector = this.isImageContainerSquare(image) ? '.' + this.squareSelector : '';
 
         return src
