@@ -288,10 +288,6 @@
         src = this.changeImageSrcToUseNewImageDimensions(this.buildUrlStructure(image.getAttribute('data-src'), image), computedWidth);
 
         image.src = src;
-
-        if (Backbone) {
-            Backbone.trigger('imager:ready')
-        }
     };
 
     Imager.prototype.determineAppropriateResolution = function(image) {
