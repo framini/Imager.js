@@ -317,7 +317,7 @@
         var squareSelector = this.isImageContainerSquare(image) ? '.' + this.squareSelector : '';
 
         return src
-            .replace(/\.(jpg|gif|bmp|png)[^s]?({width})?[^s]({pixel_ratio})?/g, '.' + this.adaptSelector + '.$2.$3' + squareSelector + '.$1');
+            .replace(/\.(jpg|gif|bmp|png)[^s]?({width})?[^s]({pixel_ratio})?/gi, '.' + this.adaptSelector + '.$2.$3' + squareSelector + '.$1');
     };
 
     Imager.prototype.isImageContainerSquare = function(image) {
