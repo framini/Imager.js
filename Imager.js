@@ -137,7 +137,7 @@
         this.deltaSquare = opts.deltaSquare || 1.5;
         this.squareSelector = opts.squareSelector || 'sqrcrop';
         this.adaptSelector = this.adaptSelector || 'adapt';
-        this.allowedExtensions = ["jpg","gif","bmp","png","jpeg"];
+        this.allowedExtensions = ["jpg","bmp","png","jpeg"];
 
         // Needed as IE8 adds a default `width`/`height` attribute…
         this.gif.removeAttribute('height');
