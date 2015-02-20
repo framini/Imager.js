@@ -296,7 +296,7 @@
     };
 
     Imager.prototype.removeModifiersfromImageSrc = function(src) {
-        var regExp = new RegExp("/\.(" + this.allowedExtensions.concat("|")  + ")\/({width})\/({pixel_ratio})?/", "gi");
+        var regExp = new RegExp("\.(" + this.allowedExtensions.join("|")  + ")\/({width})\/({pixel_ratio})?", "gi");
         return src.replace(regExp, '.$1');
     };
 
@@ -306,11 +306,11 @@
     };
 
     Imager.prototype.getImageExtension = function(image) {
-        var regExp = new RegExp("/\.(" + this.allowedExtensions.concat("|")  + ")\/{width}\/{pixel_ratio}?/", "gi");
+        var regExp = new RegExp("\/.*\.(.*)\/{width}\/{pixel_ratio}?", "gi");
         var match = regExp.exec(image.getAttribute('data-src'));
-        return match[1];
+        return match ? match[1] : "";
     };
-
+//http://platform.dev:4502/content/core/en/magazine/issue-x/story-1/jcr:content/content/image_1.png/1423680057003.jpg/{width}/{pixel_ratio}
     Imager.prototype.determineAppropriateResolution = function(image) {
         return Imager.getClosestValue(image.getAttribute('data-width') || image.parentNode.clientWidth, this.availableWidths);
     };
@@ -337,7 +337,7 @@
     Imager.prototype.buildUrlStructure = function(src, image) {
         var squareSelector = this.isImageContainerSquare(image) ? '.' + this.squareSelector : '';
 
-        var regExp = new RegExp("/\.(" + this.allowedExtensions.concat("|")  + ")\/({width})\/({pixel_ratio})?/", "gi");
+        var regExp = new RegExp("\.(" + this.allowedExtensions.join("|")  + ")\/({width})\/({pixel_ratio})?", "gi");
 
         return src.replace(regExp, '.' + this.adaptSelector + '.$2.$3' + squareSelector + '.$1');
     };
