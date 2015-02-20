@@ -137,6 +137,7 @@
         this.deltaSquare = opts.deltaSquare || 1.5;
         this.squareSelector = opts.squareSelector || 'sqrcrop';
         this.adaptSelector = this.adaptSelector || 'adapt';
+        this.allowedExtensions = ["jpg","gif","bmp","png","jpeg"];
 
         // Needed as IE8 adds a default `width`/`height` attribute…
         this.gif.removeAttribute('height');
@@ -285,9 +286,29 @@
             return;
         }
 
-        src = this.changeImageSrcToUseNewImageDimensions(this.buildUrlStructure(image.getAttribute('data-src'), image), computedWidth);
+        if (this.isExtensionAllowed(image)) {
+            src = this.changeImageSrcToUseNewImageDimensions(this.buildUrlStructure(image.getAttribute('data-src'), image), computedWidth);
+        } else {
+            src = this.removeModifiersfromImageSrc(image.getAttribute('data-src'));
+        }
 
         image.src = src;
+    };
+
+    Imager.prototype.removeModifiersfromImageSrc = function(src) {
+        var regExp = new RegExp("/\.(" + this.allowedExtensions.concat("|")  + ")\/({width})\/({pixel_ratio})?/", "gi");
+        return src.replace(regExp, '.$1');
+    };
+
+    Imager.prototype.isExtensionAllowed = function(image) {
+        var imageExtension = this.getImageExtension(image);
+        return imageExtension ? this.allowedExtensions.indexOf(imageExtension) > 0 : false;
+    };
+
+    Imager.prototype.getImageExtension = function(image) {
+        var regExp = new RegExp("/\.(" + this.allowedExtensions.concat("|")  + ")\/{width}\/{pixel_ratio}?/", "gi");
+        var match = regExp.exec(image.getAttribute('data-src'));
+        return match[1];
     };
 
     Imager.prototype.determineAppropriateResolution = function(image) {
@@ -316,8 +337,9 @@
     Imager.prototype.buildUrlStructure = function(src, image) {
         var squareSelector = this.isImageContainerSquare(image) ? '.' + this.squareSelector : '';
 
-        return src
-            .replace(/\.(jpg|gif|bmp|png|jpeg)[^s]?({width})?[^s]({pixel_ratio})?/gi, '.' + this.adaptSelector + '.$2.$3' + squareSelector + '.$1');
+        var regExp = new RegExp("/\.(" + this.allowedExtensions.concat("|")  + ")\/({width})\/({pixel_ratio})?/", "gi");
+
+        return src.replace(regExp, '.' + this.adaptSelector + '.$2.$3' + squareSelector + '.$1');
     };
 
     Imager.prototype.isImageContainerSquare = function(image) {
