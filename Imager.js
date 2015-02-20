@@ -296,8 +296,8 @@
     };
 
     Imager.prototype.removeModifiersfromImageSrc = function(src) {
-        var regExp = new RegExp("\\/.*\\.(.*)\\/{width}\\/{pixel_ratio}?", "gi");
-        return src.replace(regExp, '.$1');
+        var regExp = new RegExp("\\/{width}\\/{pixel_ratio}", "g");
+        return src.replace(regExp, '');
     };
 
     Imager.prototype.isExtensionAllowed = function(image) {
