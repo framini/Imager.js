@@ -302,7 +302,7 @@
 
     Imager.prototype.isExtensionAllowed = function(image) {
         var imageExtension = this.getImageExtension(image);
-        return imageExtension ? this.allowedExtensions.indexOf(imageExtension) > 0 : false;
+        return imageExtension ? this.allowedExtensions.indexOf(imageExtension.toLowerCase()) > 0 : false;
     };
 
     Imager.prototype.getImageExtension = function(image) {
