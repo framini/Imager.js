@@ -216,7 +216,7 @@
         gif.className = (elementClassName ? elementClassName + ' ' : '') + this.className;
         gif.setAttribute('data-src', element.getAttribute('data-src'));
         gif.setAttribute('alt', element.getAttribute('data-alt') || this.gif.alt);
-
+        gif.setAttribute('itemprop', element.getAttribute('data-itemprop') || "contentUrl");
         element.parentNode.replaceChild(gif, element);
 
         return gif;
