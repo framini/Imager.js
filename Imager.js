@@ -217,6 +217,13 @@
         gif.setAttribute('data-src', element.getAttribute('data-src'));
         gif.setAttribute('alt', element.getAttribute('data-alt') || this.gif.alt);
         gif.setAttribute('itemprop', element.getAttribute('data-itemprop') || "contentUrl");
+
+        // Check if the data-title attribute is there
+        var titleText = element.getAttribute('data-title');
+        if (titleText) {
+            gif.setAttribute('title', titleText);
+        }
+
         element.parentNode.replaceChild(gif, element);
 
         return gif;
